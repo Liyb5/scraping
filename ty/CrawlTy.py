@@ -19,8 +19,11 @@ class Downloader(object):
     def download(self,url):
         self.s = requests.session()
         #div元素中的文本前有<br>，<b><font color=#gg0000>两种css属性，导致文本不能显示，故在此将其替换掉
-        self.r = self.s.get(url,headers=self.headers).text.replace('<br>', '\n')
-        self.r = self.r.replace('<b><font color=#gg0000>','')
+        #self.r = self.s.get(url,headers=self.headers).text.replace('<br>', '\n')
+        #self.r = self.r.replace('<b><font color=#gg0000>','')
+	#还有一种方法，不需要替换，使用xpath高级语法：string(.)
+	
+        self.r = self.s.get(url,headers=self.headers).text
         return self.r
 
 #文本解析器
@@ -44,4 +47,4 @@ if __name__ == '__main__':
         p = m.paser_text(d)
         for item in p:
             with open('ty.txt','a+',encoding='utf-8') as f:
-                f.write(item.text.strip())
+                f.write(item.xpath('string(.)'))
